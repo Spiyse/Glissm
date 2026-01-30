@@ -1,4 +1,3 @@
-# Glissm
 Glissm is a multi-purpose Discord bot.
 
 ## Setup
