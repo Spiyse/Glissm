@@ -7,9 +7,9 @@ from discord.ext import commands
 
 import config
 from help_command import HelpCommand
+from logger import logger
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("glissm")
 
 
 async def load_cogs(bot: commands.Bot) -> None:

@@ -1,8 +1,7 @@
 from discord.ext import commands
-import logging
 import config
 
-logger = logging.getLogger("glissm")
+from logger import logger
 
 class RefreshCommand(commands.Cog):
     @commands.command(name="refresh")

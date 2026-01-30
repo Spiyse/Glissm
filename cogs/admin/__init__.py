@@ -1,5 +1,3 @@
-"""Admin cog – owner-only. One file per command, wired here."""
-
 from discord.ext import commands
 
 import config

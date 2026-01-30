@@ -1,11 +1,10 @@
 from discord.ext import commands
-import logging
 import config
 import os
 import sys
 import subprocess
 
-logger = logging.getLogger("glissm")
+from logger import logger
 
 
 class RestartCommand(commands.Cog):
