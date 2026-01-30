@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 
 import config
-from help_command import EmbedHelpCommand
+from help_command import HelpCommand
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("glissm")
@@ -29,8 +29,9 @@ async def main() -> None:
     bot = commands.Bot(
         command_prefix=config.COMMAND_PREFIX,
         intents=intents,
-        help_command=EmbedHelpCommand(),
+        help_command=HelpCommand(),
     )
+    
 
     @bot.event
     async def on_ready() -> None:
