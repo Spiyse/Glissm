@@ -2,10 +2,12 @@ from discord.ext import commands
 
 import config
 
-from . import refresh, reload, shutdown, restart
+from . import activity, refresh, reload, shutdown, restart, status
 
 
-class Admin(refresh.RefreshCommand, reload.ReloadCommand, shutdown.ShutdownCommand, restart.RestartCommand):
+class Admin(refresh.RefreshCommand, reload.ReloadCommand, shutdown.ShutdownCommand, restart.RestartCommand,
+            activity.ChangeActivityCommand, status.ChangeStatusCommand):
+    
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         commands.Cog.__init__(self)
