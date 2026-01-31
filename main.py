@@ -13,9 +13,10 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def load_cogs(bot: commands.Bot) -> None:
-  # Load all cogs from config.COGS.
     for cog in config.COGS:
         try:
+            if cog in bot.extensions:
+                await bot.unload_extension(cog)
             await bot.load_extension(cog)
             logger.info("Loaded cog: %s", cog)
         except commands.ExtensionError as e:
