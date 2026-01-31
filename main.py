@@ -26,6 +26,7 @@ async def load_cogs(bot: commands.Bot) -> None:
 async def main() -> None:
     intents = discord.Intents.default()
     intents.message_content = True
+    intents.members = True
 
     bot = commands.Bot(
         command_prefix=config.COMMAND_PREFIX,

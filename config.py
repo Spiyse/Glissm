@@ -19,4 +19,5 @@ OWNER_IDS = []
 COGS = [
     "cogs.general",
     "cogs.admin",
+    "cogs.utility",
 ]
