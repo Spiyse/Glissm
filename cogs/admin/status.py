@@ -1,12 +1,13 @@
 from discord.ext import commands
 import discord
+from . import presence_manager
 
 class ChangeStatusCommand(commands.Cog):
     @commands.command(name="change_status", aliases=["cs"])
     async def change_status(self, ctx: commands.Context, *, status_text: str = None) -> None:
         
         if status_text is None or status_text.strip() == '':
-            await ctx.send(f"Current status: **{self.bot.status}**")
+            await ctx.send(f"Current status: **{presence_manager.current_status}**")
             return
         
         status_text = status_text.lower().strip()
@@ -21,7 +22,9 @@ class ChangeStatusCommand(commands.Cog):
             await ctx.send(f"Invalid status")
             return
         try:
-            await self.bot.change_presence(status=status_map[status_text])
+            status = status_map[status_text]
+            await self.bot.change_presence(status=status, activity=presence_manager.current_activity)
+            presence_manager.current_status = status
             await ctx.send(f"Status changed to: **{status_text}**")
         except Exception as e:
             await ctx.send("Failed to change status")
