@@ -17,8 +17,8 @@ class ServerInfoCommand(commands.Cog):
 
 
         embed.set_author(
-            name="Glissm",
-            icon_url="https://cdn.discordapp.com/app-icons/1465776416707579986/4f3347b58711ce9d9291982e36ee0f0c.png?size=512&quot;);",
+            name=f"{ctx.guild.name}",
+            icon_url="https://cdn.discordapp.com/icons/1317584801854914671/019672d5e103f18d78188cdcca58069a.webp?size=512&quot;);",
         )
 
         embed.add_field(name="Server ID", value=f"`{ctx.guild.id}`", inline=True)
