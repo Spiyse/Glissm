@@ -10,14 +10,19 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 COMMAND_PREFIX = (os.getenv("COMMAND_PREFIX") or ">").strip().strip('"\'')
 
-# put your Discord user ID for admin commands :)
+# Owner id (set in .env)
 _raw = os.getenv("OWNER_ID")
 OWNER_ID = int(_raw) if _raw and _raw.isdigit() else None
 OWNER_IDS = []
+ 
+ # Channels where the member join and leave messages get sent ( set in .env )
+LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID")) if os.getenv("LOG_CHANNEL_ID") else None
+LEAVE_CHANNEL_ID = int(os.getenv("LEAVE_CHANNEL_ID")) if os.getenv("LEAVE_CHANNEL_ID") else None
 
 # Cogs to load on startup
 COGS = [
     "cogs.general",
     "cogs.admin",
     "cogs.utility",
+    "cogs.events",
 ]
