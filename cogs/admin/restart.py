@@ -1,4 +1,5 @@
 from discord.ext import commands
+from .base import AdminBase
 import config
 import os
 import sys
@@ -7,7 +8,7 @@ import subprocess
 from logger import logger
 
 
-class RestartCommand(commands.Cog):
+class RestartCommand(AdminBase):
     @commands.command(name="restart")
     async def restart(self, ctx: commands.Context) -> None:
         
@@ -35,3 +36,6 @@ class RestartCommand(commands.Cog):
         
         subprocess.Popen([sys.executable, "main.py"], cwd=os.path.dirname(os.path.abspath(__file__)).replace("\\cogs\\admin", ""))
         await self.bot.close()
+
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RestartCommand(bot))

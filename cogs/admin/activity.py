@@ -1,8 +1,9 @@
 from discord.ext import commands
 import discord
-from . import presence_manager
+from .utils import presence_manager
+from .base import AdminBase
 
-class ChangeActivityCommand(commands.Cog):
+class ChangeActivityCommand(AdminBase):
     @commands.command(name="change_activity", aliases=["ca"])
     async def change_activity(self, ctx: commands.Context, activity_type: str = None, *, activity_text: str = None) -> None:
         
@@ -40,3 +41,7 @@ class ChangeActivityCommand(commands.Cog):
                 await ctx.send(f"Activity changed to: **{full_text}**")
             except:
                 await ctx.send("Failed to change activity :(")
+                
+                
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(ChangeActivityCommand(bot))

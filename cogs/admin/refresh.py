@@ -1,9 +1,10 @@
 from discord.ext import commands
-import config
 
+from .base import AdminBase
+from cogs.discovery import discover_cogs
 from logger import logger
 
-class RefreshCommand(commands.Cog):
+class RefreshCommand(AdminBase):
     @commands.command(name="refresh")
     async def refresh(self, ctx: commands.Context) -> None:
         
@@ -12,9 +13,12 @@ class RefreshCommand(commands.Cog):
         
         loaded = []
         failed = []
-        for cog in config.COGS:
+        for cog in discover_cogs():
             try:
-                await self.bot.reload_extension(cog)
+                if cog in self.bot.extensions:
+                    await self.bot.reload_extension(cog)
+                else:
+                    await self.bot.load_extension(cog)
                 loaded.append(cog.replace("cogs.", ""))
                 logger.info("Reloaded cog: %s", cog)
             except commands.ExtensionError as e:
@@ -24,3 +28,6 @@ class RefreshCommand(commands.Cog):
             await ctx.send(f"Refreshed: **{', '.join(loaded)}**\nFailed: **{', '.join(failed)}**")
         else:
             await ctx.send(f"Refreshed all cogs: **{', '.join(loaded)}**")
+
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(RefreshCommand(bot))

@@ -1,8 +1,9 @@
 from discord.ext import commands
 import discord
-from . import presence_manager
+from .utils import presence_manager
+from .base import AdminBase
 
-class ChangeStatusCommand(commands.Cog):
+class ChangeStatusCommand(AdminBase):
     @commands.command(name="change_status", aliases=["cs"])
     async def change_status(self, ctx: commands.Context, *, status_text: str = None) -> None:
         
@@ -28,3 +29,6 @@ class ChangeStatusCommand(commands.Cog):
             await ctx.send(f"Status changed to: **{status_text}**")
         except Exception as e:
             await ctx.send("Failed to change status")
+            
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(ChangeStatusCommand(bot))
