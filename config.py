@@ -18,11 +18,3 @@ OWNER_IDS = []
  # Channels where the member join and leave messages get sent ( set in .env )
 LOG_CHANNEL_ID = int(os.getenv("LOG_CHANNEL_ID")) if os.getenv("LOG_CHANNEL_ID") else None
 LEAVE_CHANNEL_ID = int(os.getenv("LEAVE_CHANNEL_ID")) if os.getenv("LEAVE_CHANNEL_ID") else None
-
-# Cogs to load on startup
-COGS = [
-    "cogs.general",
-    "cogs.admin",
-    "cogs.utility",
-    "cogs.events",
-]
