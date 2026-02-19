@@ -3,6 +3,9 @@ import discord
 
 
 class ServerInfoCommand(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+    
     @commands.command(name="serverinfo", aliases=["si"])
     async def serverinfo(self, ctx: commands.Context) -> None:
         # description for the command
@@ -31,3 +34,6 @@ class ServerInfoCommand(commands.Cog):
         embed.set_footer(text="Hi")
 
         await ctx.send(embed=embed)
+
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(ServerInfoCommand(bot))

@@ -3,7 +3,7 @@ import discord
 import datetime, time
 
 class UptimeCommand(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.startTime = time.time()
         
@@ -28,4 +28,6 @@ class UptimeCommand(commands.Cog):
         
         await ctx.send(embed=embed)
             
-            
+
+async def setup(bot: commands.Bot) -> None:
+    await bot.add_cog(UptimeCommand(bot))         
