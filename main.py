@@ -6,14 +6,14 @@ import discord
 from discord.ext import commands
 
 import config
+from cogs.discovery import discover_cogs
 from help_command import HelpCommand
 from logger import logger
 
 logging.basicConfig(level=logging.INFO)
 
-
 async def load_cogs(bot: commands.Bot) -> None:
-    for cog in config.COGS:
+    for cog in discover_cogs():
         try:
             if cog in bot.extensions:
                 await bot.unload_extension(cog)
@@ -33,10 +33,15 @@ async def main() -> None:
         intents=intents,
         help_command=HelpCommand(),
     )
+    bot.synced = False
     
 
     @bot.event
     async def on_ready() -> None:
+        if not bot.synced:
+            await bot.tree.sync()
+            bot.synced = True
+            logger.info("Synced application commands.")
         logger.info("Logged in as %s (ID: %s)", bot.user, bot.user.id if bot.user else None)
 
     await load_cogs(bot)
