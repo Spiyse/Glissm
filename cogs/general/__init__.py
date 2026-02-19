@@ -1,14 +1,5 @@
-from discord.ext import commands
-
-from . import hello, ping
-
-
-class General(ping.PingCommand, hello.HelloCommand):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
-        commands.Cog.__init__(self)
-        self.description = "General utility commands."
-
-
-async def setup(bot: commands.Bot) -> None:
-    await bot.add_cog(General(bot))
+async def setup_hook(self):
+    await self.load_extension("cogs.general.ping")
+    await self.load_extension("cogs.general.hello")
+    await self.load_extension("cogs.general.modaltest")
+    await self.load_extension("cogs.general.test")
