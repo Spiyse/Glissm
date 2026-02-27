@@ -35,13 +35,34 @@ async def main() -> None:
     )
     bot.synced = False
     
+    @bot.tree.error
+    async def on_app_command_error(
+        interaction: discord.Interaction, error: discord.app_commands.AppCommandError
+    ) -> None:
+        logger.exception("App command error: %s", error)
+        message = "Slash command failed. Check bot logs for details."
+        if interaction.response.is_done():
+            await interaction.followup.send(message, ephemeral=True)
+        else:
+            await interaction.response.send_message(message, ephemeral=True)
 
     @bot.event
     async def on_ready() -> None:
         if not bot.synced:
-            await bot.tree.sync()
+            synced_global = await bot.tree.sync()
+            logger.info("Synced %d global application commands.", len(synced_global))
+
+            for guild in bot.guilds:
+                bot.tree.copy_global_to(guild=guild)
+                synced_guild = await bot.tree.sync(guild=guild)
+                logger.info(
+                    "Synced %d application commands to guild %s (ID: %s)",
+                    len(synced_guild),
+                    guild.name,
+                    guild.id,
+                )
+
             bot.synced = True
-            logger.info("Synced application commands.")
         logger.info("Logged in as %s (ID: %s)", bot.user, bot.user.id if bot.user else None)
 
     await load_cogs(bot)
