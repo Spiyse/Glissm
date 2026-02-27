@@ -24,10 +24,16 @@ class RefreshCommand(AdminBase):
             except commands.ExtensionError as e:
                 failed.append(f"{cog}: {e}")
                 logger.error("Failed to reload %s: %s", cog, e)
+        sync_msg = ""
+        if ctx.guild is not None:
+            self.bot.tree.copy_global_to(guild=ctx.guild)
+            synced = await self.bot.tree.sync(guild=ctx.guild)
+            sync_msg = f"\nSynced **{len(synced)}** app commands to this server."
+
         if failed:
-            await ctx.send(f"Refreshed: **{', '.join(loaded)}**\nFailed: **{', '.join(failed)}**")
+            await ctx.send(f"Refreshed: **{', '.join(loaded)}**\nFailed: **{', '.join(failed)}**{sync_msg}")
         else:
-            await ctx.send(f"Refreshed all cogs: **{', '.join(loaded)}**")
+            await ctx.send(f"Refreshed all cogs: **{', '.join(loaded)}**{sync_msg}")
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(RefreshCommand(bot))

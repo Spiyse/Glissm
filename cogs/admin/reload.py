@@ -24,7 +24,12 @@ class ReloadCommand(AdminBase):
             else:
                 await self.bot.reload_extension(full_name)
             logger.info("Reloaded cog: %s", full_name)
-            await ctx.send(f"Reloaded **{full_name}**.")
+            sync_msg = ""
+            if ctx.guild is not None:
+                self.bot.tree.copy_global_to(guild=ctx.guild)
+                synced = await self.bot.tree.sync(guild=ctx.guild)
+                sync_msg = f" Synced {len(synced)} app commands to this server."
+            await ctx.send(f"Reloaded **{full_name}**.{sync_msg}")
         except commands.ExtensionError as e:
             await ctx.send(f"Failed to reload: **{e}**")
             

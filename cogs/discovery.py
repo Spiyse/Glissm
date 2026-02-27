@@ -3,6 +3,7 @@ from pathlib import Path
 
 def discover_cogs() -> list[str]:
     blocked = {
+        "cogs.discovery",
         "cogs.admin.base",
         "cogs.admin.utils.presence_manager",
     }

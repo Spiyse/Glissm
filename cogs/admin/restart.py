@@ -1,10 +1,10 @@
 from discord.ext import commands
 from .base import AdminBase
-import config
 import os
 import sys
 import subprocess
 
+from cogs.discovery import discover_cogs
 from logger import logger
 
 
@@ -18,9 +18,12 @@ class RestartCommand(AdminBase):
         loaded = []
         failed = []
         
-        for cog in config.COGS:
+        for cog in discover_cogs():
             try:
-                await self.bot.reload_extension(cog)
+                if cog in self.bot.extensions:
+                    await self.bot.reload_extension(cog)
+                else:
+                    await self.bot.load_extension(cog)
                 loaded.append(cog.replace("cogs.", ""))
                 logger.info("Reloaded cog: %s", cog)
             except commands.ExtensionError as e:
