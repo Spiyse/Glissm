@@ -6,11 +6,15 @@ from logger import logger
 
 class ReloadCommand(AdminBase):
     @commands.command(name="reload")
-    async def reload(self, ctx: commands.Context, cog_name: str) -> None:
+    async def reload(self, ctx: commands.Context, cog_name: str | None = None) -> None:
         
         # description for the command
         """Reload a specific cog by name."""
         
+        if cog_name is None:
+            await ctx.send("Usage: `>reload <cog>` (example: `>reload moderation.ban`)")
+            return
+
         cog_name = cog_name.lower().strip()
         full_name = cog_name if cog_name.startswith("cogs.") else f"cogs.{cog_name}"
         known_cogs = discover_cogs()
