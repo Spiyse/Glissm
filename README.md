@@ -1,38 +1,63 @@
 # Glissm
-Glissm is a multi-purpose Discord bot built with `discord.py`.
+Glissm is a multi-purpose Discord bot built with `discord.py` and dynamic cog loading.
 
-## Setup
-1. Create a bot at the [Discord Developer Portal](https://discord.com/developers/applications).
-2. Enable **Message Content Intent** (required for prefix commands like `>ping`).
+## Features
+- Prefix and slash command support
+- Dynamic cog discovery (`cogs/discovery.py`)
+- Admin reload/refresh workflow for fast iteration
+- Moderation tooling with warning storage (Supabase)
+
+## Quickstart
+1. Create a bot in the [Discord Developer Portal](https://discord.com/developers/applications).
+2. Enable intents:
+- `Message Content Intent` (required for prefix commands like `>ping`)
+- `Server Members Intent` (recommended for moderation/member features)
 3. Create a `.env` file in the project root:
-   ```env
-   DISCORD_TOKEN=your_bot_token_here
-   COMMAND_PREFIX=>
-   OWNER_ID=your_user_id
-   ```
-4. Invite the bot to your server with `bot` and `applications.commands` scopes.
+```env
+DISCORD_TOKEN=
+COMMAND_PREFIX=>
+OWNER_ID=
+LOG_CHANNEL_ID=
+LEAVE_CHANNEL_ID=
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+MOD_ROLE_IDS=
+MOD_ROLE_NAMES=mod,moderator
+```
+4. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 5. Run the bot:
-   ```bash
-   python main.py
-   ```
+```bash
+python main.py
+```
 
-## Architecture
-- `main.py`: startup, bot events, extension loading.
-- `cogs/`: all command/event modules.
-- `cogs/discovery.py`: dynamic cog discovery used by startup and admin reload/refresh.
+## Project Layout
+- `main.py`: startup, event wiring, extension loading
+- `config.py`: environment parsing and runtime config
+- `database.py`: Supabase client setup
+- `help_command.py`: custom grouped help command
+- `cogs/`: command/event modules
 
-## Cog Loading Rules
-- Cogs are auto-discovered from `cogs/**/*.py`.
-- `__init__.py` files are skipped.
-- Helper/internal modules are filtered in `cogs/discovery.py`.
-- Every loadable cog module must include:
-  - a `commands.Cog` class
-  - `async def setup(bot)` that calls `await bot.add_cog(...)`
+## Cog Discovery Rules
+- Auto-discovers Python modules under `cogs/**`
+- Skips `__init__.py`
+- Skips utility/internal modules listed in `cogs/discovery.py`
+- Loads only modules that define `setup(bot)`
 
 ## Troubleshooting
-- Prefix commands do not respond:
-  - check **Message Content Intent** in Discord Developer Portal
-  - check bot channel permissions
-- Slash commands do not appear:
-  - wait for startup sync to complete
-  - confirm invite included `applications.commands`
+### Prefix commands not responding
+- Confirm `Message Content Intent` is enabled
+- Confirm the bot can read/send messages in the channel
+- Confirm your prefix matches `COMMAND_PREFIX`
+
+### Slash commands not showing
+- Restart the bot and wait for sync to complete
+- Confirm invite includes `applications.commands`
+- Confirm command checks (owner/mod roles) are satisfied
+
+## Development Notes
+- Keep extension entry points in each cog file (`async def setup(bot)`).
+- Avoid loading cogs from package `__init__.py` files.
+- Use admin `reload`/`refresh` commands while developing.
