@@ -1,9 +1,21 @@
 import discord
 from discord.ext import commands
-
 # The help command is outside the cogs cuz it is it's own thing
 
 class HelpCommand(commands.HelpCommand):
+    @staticmethod
+    def get_category_name(command: commands.Command) -> str:
+        cog = command.cog
+        if cog is None:
+            return "No category"
+
+        module = getattr(cog, "__module__", "")
+        parts = module.split(".")
+        if len(parts) >= 3 and parts[0] == "cogs":
+            return parts[1].replace("_", " ").title()
+
+        return cog.qualified_name
+
     def get_command_signature(self, command: commands.Command) -> str:
 
         parent = command.full_parent_name
@@ -17,20 +29,29 @@ class HelpCommand(commands.HelpCommand):
         await self.context.send(embed=embed)
 
     async def send_bot_help(self, mapping: dict) -> None:
-        # list all cogs and commands
+        # list commands grouped by category (admin/moderation/general/etc.)
         embed = discord.Embed(
             title="Command list",
             description=f"Use `{self.context.clean_prefix}help <command>` for details.",
             color=discord.Color.from_str("#272b3f"),
             timestamp=discord.utils.utcnow(),
         )
+
+        grouped: dict[str, set[str]] = {}
+
         for cog, command_list in mapping.items():
             filtered = await self.filter_commands(command_list, sort=True)
             if not filtered:
                 continue
-            name = cog.qualified_name if cog else "No category"
-            value = " ".join(f"`{c.name}`" for c in filtered)
-            embed.add_field(name=name, value=value, inline=False)
+
+            for command in filtered:
+                category = self.get_category_name(command)
+                grouped.setdefault(category, set()).add(command.name)
+
+        for category in sorted(grouped):
+            value = " ".join(f"`{name}`" for name in sorted(grouped[category]))
+            embed.add_field(name=category, value=value, inline=False)
+
         await self.send_embed(embed)
 
     async def send_cog_help(self, cog: commands.Cog) -> None:
