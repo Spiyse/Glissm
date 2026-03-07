@@ -7,6 +7,34 @@ Glissm is a multi-purpose Discord bot built with `discord.py` and dynamic cog lo
 - Admin reload/refresh workflow for fast iteration
 - Moderation tooling with warning storage (Supabase)
 
+## Commands
+```
+MODERATION (slash commands)
+
+  /ban         ban member with optional message deletion (0-7 days)
+  /kick        remove member from server
+  /timeout     silence member for specified duration (max 28d)
+  /warn        issue warning to member (stored in database)
+  /unwarn      remove specific warning from record
+  /warnings    view member's warning history (10 most recent)
+
+ADMIN (owner only)
+
+  change_activity (ca)     modify bot activity status
+  change_status (cs)       set online status (online/idle/dnd/offline)
+  refresh                  reload all cogs + sync commands
+  reload <cog>             reload specific cog
+  restart                  full bot restart
+  shutdown (quit/stop)     terminate bot process
+
+UTILITY
+
+  serverinfo (si)          detailed server information
+  uptime                   bot runtime since last restart
+  hello                    personalized greeting
+  ping                     display bot latency
+```
+
 ## Quickstart
 1. Create a bot in the [Discord Developer Portal](https://discord.com/developers/applications).
 2. Enable intents:
@@ -15,7 +43,6 @@ Glissm is a multi-purpose Discord bot built with `discord.py` and dynamic cog lo
 3. Create a `.env` file in the project root:
 ```env
 DISCORD_TOKEN=
-COMMAND_PREFIX=>
 OWNER_ID=
 LOG_CHANNEL_ID=
 LEAVE_CHANNEL_ID=
