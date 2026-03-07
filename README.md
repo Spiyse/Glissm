@@ -1,6 +1,7 @@
 # Glissm
 Glissm is a multi-purpose Discord bot built with `discord.py` and dynamic cog loading.
 
+
 ## Features
 - Prefix and slash command support
 - Dynamic cog discovery (`cogs/discovery.py`)
@@ -59,6 +60,11 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+## Invite to server
+
+if you don't want to self host, i have custom verison of the bot hosted on my own server that runs 24/7.
+all the info is on my site https://spiyse.github.io/Glissm-Bot-Website/
 
 ## Project Layout
 - `main.py`: startup, event wiring, extension loading
