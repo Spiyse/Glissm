@@ -21,19 +21,19 @@ MODERATION (slash commands)
 
 ADMIN (owner only)
 
-  change_activity (ca)     modify bot activity status
-  change_status (cs)       set online status (online/idle/dnd/offline)
-  refresh                  reload all cogs + sync commands
-  reload <cog>             reload specific cog
-  restart                  full bot restart
-  shutdown (quit/stop)     terminate bot process
+  >change_activity ( or >ca)     modify bot activity status
+  >change_status ( or >cs)       set online status (online/idle/dnd/offline)
+  >refresh                       reload all cogs + sync commands
+  >reload <cog>                  reload specific cog
+  >restart                       full bot restart
+  >shutdown                      terminate bot process
 
 UTILITY
 
-  serverinfo (si)          detailed server information
-  uptime                   bot runtime since last restart
-  hello                    personalized greeting
-  ping                     display bot latency
+  >serverinfo ( or >si)     detailed server information
+  >uptime                   bot runtime since last restart
+  >hello                    personalized greeting
+  >ping                     display bot latency
 ```
 
 ## Quickstart
